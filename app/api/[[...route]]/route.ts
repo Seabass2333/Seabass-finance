@@ -16,5 +16,23 @@ app.route('/books', books)
 
 app.use('*', clerkMiddleware())
 
+app
+  .get(
+    '/hello',
+    (c) => {
+      const auth = getAuth(c)
+
+      if (!auth?.userId) {
+        return c.json({
+          error: 'you are not authenticated',
+        })
+      }
+
+      return c.json({
+        message: 'Hello  you are login in now!',
+        userId: auth.userId,
+      })
+    })
+
 export const GET = handle(app)
 export const POST = handle(app)
