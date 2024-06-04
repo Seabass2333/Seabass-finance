@@ -8,6 +8,13 @@
       "when": 1717057720362,
       "tag": "0000_handy_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1717482658116,
+      "tag": "0001_daily_shriek",
+      "breakpoints": true
     }
   ]
 }
