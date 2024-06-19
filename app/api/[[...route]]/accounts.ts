@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { zValidator } from "@hono/zod-validator";
+import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/drizzle";
-import { accounts } from "@/db/schema";
+import { accounts, insertAccountSchema } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 const Accounts = new Hono()
@@ -25,16 +27,33 @@ const Accounts = new Hono()
 
       return c.json({ data })
     })
-// .get('/:id', async (c) => {
-//   const data = await db
-//     .select({
-//       id: accounts.id,
-//       name: accounts.name,
-//     })
-//     .from(accounts)
-//     .where(eq(c.req.param('id'), accounts.id))
+  .post(
+    '/',
+    clerkMiddleware(),
+    zValidator('json', insertAccountSchema.pick({
+      name: true,
+    })),
+    async (c) => {
+      const auth = getAuth(c)
+      const values = c.req.valid('json')
 
-//   return c.json({ data })
-// })
+      if (!auth?.userId) {
+        return c.json({ error: 'Unauthorized' }, 401)
+      }
+
+      const { name } = c.body
+      if (!name) {
+        return c.json({ error: 'Name is required' }, 400)
+      }
+
+      const [data] = await db.insert(accounts).values({
+        id: createId(),
+        userId: auth.userId,
+        ...values
+      }).returning()
+
+      return c.json({ data })
+    }
+  )
 
 export default Accounts
