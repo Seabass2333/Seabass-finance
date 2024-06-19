@@ -15,9 +15,20 @@ const data: Payment[] = [
     id: '728ed52f',
     amount: 100,
     status: 'pending',
-    email: 'm@example.com'
+    email: 'luhan@example.com'
+  },
+  {
+    id: '728ed52d',
+    amount: 30,
+    status: 'success',
+    email: 'huanwei@example.com'
+  },
+  {
+    id: '728ed53f',
+    amount: 60,
+    status: 'failed',
+    email: 'xiaoming@example.com'
   }
-  // ...
 ]
 
 const AccountsPage = () => {
@@ -35,8 +46,11 @@ const AccountsPage = () => {
         </CardHeader>
         <CardContent>
           <DataTable
+            filterKey='email'
             columns={columns}
             data={data}
+            onDelete={() => {}}
+            disabled={false}
           />
         </CardContent>
       </Card>
