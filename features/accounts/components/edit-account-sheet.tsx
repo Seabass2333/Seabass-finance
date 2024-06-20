@@ -1,5 +1,9 @@
-import { insertAccountSchema } from '@/db/schema'
 import { z } from 'zod'
+
+import { insertAccountSchema } from '@/db/schema'
+import { useCreateAccount } from '@/features/accounts/api/use-create-account'
+import { useOpenAccount } from '@/features/accounts/hooks/use-open-account'
+import { useGetAccount } from '@/features/accounts/api/use-get-account'
 
 import {
   Sheet,
@@ -9,9 +13,8 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 
-import { useNewAccount } from '../hooks/use-new-account'
 import { AccountForm } from './account-form'
-import { useCreateAccount } from '../api/use-create-account'
+import { Loader2 } from 'lucide-react'
 
 const formSchema = insertAccountSchema.pick({
   name: true
@@ -19,10 +22,13 @@ const formSchema = insertAccountSchema.pick({
 
 type FormValues = z.input<typeof formSchema>
 
-export const NewAccountSheet = () => {
-  const { isOpen, onClose } = useNewAccount()
+export const EditAccountSheet = () => {
+  const { isOpen, onClose, id = '' } = useOpenAccount()
 
+  const accountQuery = useGetAccount(id)
   const mutation = useCreateAccount()
+
+  const isLoading = accountQuery.isLoading
 
   const handleSubmit = (values: FormValues) => {
     mutation.mutate(values, {
@@ -32,6 +38,14 @@ export const NewAccountSheet = () => {
     })
   }
 
+  const defaultValues = accountQuery.data
+    ? {
+        name: accountQuery.data.name
+      }
+    : {
+        name: ''
+      }
+
   return (
     <Sheet
       open={isOpen}
@@ -39,18 +53,21 @@ export const NewAccountSheet = () => {
     >
       <SheetContent className='space-y-4'>
         <SheetHeader>
-          <SheetTitle>New Account</SheetTitle>
-          <SheetDescription>
-            Create a new account to get started.
-          </SheetDescription>
+          <SheetTitle>Edit Account</SheetTitle>
+          <SheetDescription>Edit an existing account.</SheetDescription>
         </SheetHeader>
-        <AccountForm
-          onSubmit={handleSubmit}
-          disabled={mutation.isPending}
-          defaultValues={{
-            name: ''
-          }}
-        />
+        {isLoading ? (
+          <div className='absolute inset-0 flex items-center justify-center'>
+            <Loader2 className='size-4 text-muted-foreground animate-spin' />
+          </div>
+        ) : (
+          <AccountForm
+            id={id}
+            onSubmit={handleSubmit}
+            disabled={mutation.isPending}
+            defaultValues={defaultValues}
+          />
+        )}
       </SheetContent>
     </Sheet>
   )

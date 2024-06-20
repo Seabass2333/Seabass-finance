@@ -9,9 +9,9 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 
-import { useNewAccount } from '../hooks/use-new-account'
+import { useNewAccount } from '@/features/accounts/hooks/use-new-account'
 import { AccountForm } from './account-form'
-import { useCreateAccount } from '../api/use-create-account'
+import { useCreateAccount } from '@/features/accounts/api/use-create-account'
 
 const formSchema = insertAccountSchema.pick({
   name: true
