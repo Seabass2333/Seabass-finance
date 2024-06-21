@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/drizzle";
-import { categories, insertCategoriesSchema } from "@/db/schema";
+import { categories, insertCategorySchema } from "@/db/schema";
 import { and, eq, inArray } from "drizzle-orm";
 import { z } from "zod";
 
@@ -69,7 +69,7 @@ const Categories = new Hono()
   .post(
     '/',
     clerkMiddleware(),
-    zValidator('json', insertCategoriesSchema.pick({
+    zValidator('json', insertCategorySchema.pick({
       name: true,
     })),
     async (c) => {
@@ -122,7 +122,7 @@ const Categories = new Hono()
     zValidator('param', z.object({
       id: z.string().optional()
     })),
-    zValidator('json', insertCategoriesSchema.pick({
+    zValidator('json', insertCategorySchema.pick({
       name: true,
     })),
     async (c) => {
