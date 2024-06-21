@@ -8,8 +8,8 @@ type OpenAccountState = {
 }
 
 export const useOpenAccount = create<OpenAccountState>((set) => ({
-  id: undefined,
+  id: '',
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false, id: undefined })
+  onClose: () => set({ isOpen: false, id: '' })
 }))
