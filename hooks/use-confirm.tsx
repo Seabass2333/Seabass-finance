@@ -31,8 +31,6 @@ export const useConfirm = (
   }
 
   const handleClose = () => {
-    console.log('handleClose')
-
     setPromise(null)
   }
 
@@ -42,8 +40,6 @@ export const useConfirm = (
   }
 
   const handleCancel = () => {
-    console.log('handleCancel')
-
     promise?.resolve(false)
     handleClose()
   }
