@@ -5,7 +5,7 @@ import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/drizzle";
 import { transactions, insertTransactionSchema, categories, accounts } from "@/db/schema";
-import { and, desc, eq, gte, inArray, lte } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { z } from "zod";
 import { parse, subDays } from "date-fns";
 
@@ -158,8 +158,11 @@ const Categories = new Hono()
         .with(transactionsToDelete)
         .delete(transactions)
         .where(
-          inArray(transactions.id, spl)
+          inArray(transactions.id, sql`(select id from ${transactionsToDelete})`)
         )
+        .returning({
+          id: transactions.id,
+        })
 
 
       return c.json({ data })
