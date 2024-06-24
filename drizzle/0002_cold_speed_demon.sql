@@ -1,1 +1,0 @@
-ALTER TABLE "accounts" DROP COLUMN IF EXISTS "plaid_id";

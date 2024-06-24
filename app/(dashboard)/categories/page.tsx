@@ -5,7 +5,7 @@ import { Loader2, Plus } from 'lucide-react'
 import { useNewCategory } from '@/features/categories/hooks/use-new-category'
 
 import { useGetCategories } from '@/features/categories/api/use-get-categories'
-import { useBulkDeleteCategory } from '@/features/categories/api/use-bulk-delete'
+import { useBulkDeleteCategory } from '@/features/categories/api/use-bulk-delete-categories'
 
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/data-table'

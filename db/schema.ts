@@ -18,3 +18,17 @@ export const categories = pgTable('categories', {
 });
 
 export const insertCategorySchema = createInsertSchema(categories);
+
+export const transactions = pgTable('transactions', {
+  id: text('id').primaryKey(),
+  plaidId: text('plaid_id'),
+  accountId: text('account_id').notNull(),
+  categoryId: text('category_id'),
+  amount: text('amount').notNull(),
+  date: text('date').notNull(),
+  name: text('name').notNull(),
+  userId: text('user_id').notNull(),
+});
+
+
+
