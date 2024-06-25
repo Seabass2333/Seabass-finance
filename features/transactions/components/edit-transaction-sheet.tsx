@@ -18,8 +18,8 @@ import { TransactionForm } from './transaction-form'
 import { Loader2 } from 'lucide-react'
 import { useConfirm } from '@/hooks/use-confirm'
 
-const formSchema = insertTransactionSchema.pick({
-  name: true
+const formSchema = insertTransactionSchema.omit({
+  id: true
 })
 
 type FormValues = z.input<typeof formSchema>
@@ -30,7 +30,6 @@ export const EditTransactionSheet = () => {
   const [ConfirmDialog, confirm] = useConfirm(
     'Are you sure?',
     'You want to delete this transaction? This action cannot be undone.'
-    // () => deleteMutation.mutate()
   )
 
   const transactionQuery = useGetTransaction(id)

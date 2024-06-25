@@ -4,12 +4,13 @@ import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/drizzle";
-import { transactions, insertTransactionSchema, categories, accounts } from "@/db/schema";
 import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { z } from "zod";
 import { parse, subDays } from "date-fns";
 
-const Categories = new Hono()
+import { transactions, insertTransactionSchema, categories, accounts } from "@/db/schema";
+
+const Transaction = new Hono()
   .get(
     '/',
     zValidator('query', z.object({
@@ -27,7 +28,7 @@ const Categories = new Hono()
       }
 
       const defaultTo = new Date()
-      const defaultFrom = subDays(new Date(), 30)
+      const defaultFrom = subDays(defaultTo, 30)
 
       const startDate = from ? parse(from, 'yyyy-MM-dd', new Date()) : defaultFrom
       const endDate = to ? parse(to, 'yyyy-MM-dd', new Date()) : defaultTo
@@ -50,7 +51,7 @@ const Categories = new Hono()
         .where(
           and(
             accountId ? eq(transactions.accountId, accountId) : undefined,
-            eq(transactions.userId, auth.userId),
+            eq(accounts.userId, auth.userId),
             gte(transactions.date, startDate),
             lte(transactions.date, endDate),
           )
@@ -92,7 +93,7 @@ const Categories = new Hono()
         .where(
           and(
             eq(transactions.id, id),
-            eq(transactions.userId, auth.userId)
+            eq(accounts.userId, auth.userId)
           )
         )
 
@@ -169,7 +170,7 @@ const Categories = new Hono()
             .where(
               and(
                 inArray(transactions.id, ids),
-                eq(transactions.userId, auth.userId)
+                eq(accounts.userId, auth.userId)
               )
             )
         )
@@ -218,7 +219,7 @@ const Categories = new Hono()
             .where(
               and(
                 eq(transactions.id, id),
-                eq(transactions.userId, auth.userId)
+                eq(accounts.userId, auth.userId)
               )
             )
         )
@@ -264,7 +265,7 @@ const Categories = new Hono()
             .where(
               and(
                 eq(transactions.id, id),
-                eq(transactions.userId, auth.userId)
+                eq(accounts.userId, auth.userId)
               )
             )
         )
@@ -287,4 +288,4 @@ const Categories = new Hono()
     }
   )
 
-export default Categories
+export default Transaction

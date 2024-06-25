@@ -15,26 +15,103 @@ import {
   FormMessage
 } from '@/components/ui/form'
 
-const formSchema = insertTransactionSchema.pick({
-  name: true
+const formSchema = z.object({
+  date: z.coerce.date(),
+  accountId: z.string(),
+  categoryId: z.string(),
+  payee: z.string(),
+  amount: z.string(),
+  notes: z.string().nullable().optional()
+})
+
+const apiSchema = insertTransactionSchema.omit({
+  id: true
 })
 
 type FormValues = z.input<typeof formSchema>
+type ApiFormValues = z.output<typeof apiSchema>
 
 type Props = {
   id?: string
-  defaultValues?: FormValues
-  onSubmit: (values: FormValues) => void
-  onDelete?: () => void
   disabled?: boolean
+  defaultValues?: FormValues
+  onDelete?: () => void
+  onSubmit: (values: ApiFormValues) => void
+  accountOptions: { value: string; label: string }[]
+  categoryOptions: { value: string; label: string }[]
+  onCreateCategory: (name: string) => void
+  onCreateAccount: (name: string) => void
 }
 
 export const TransactionForm = ({
   id,
+  disabled,
   defaultValues,
-  onSubmit,
   onDelete,
-  disabled
+  onSubmit,
+  accountOptions,
+  categoryOptions,
+  onCreateCategory,
+  onCreateAccount
+}: Props) => {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues
+  })
+
+  const handleSubmit = (data: FormValues) => {
+    onSubmit(data)
+  }
+
+  const handleDelete = () => {
+    onDelete?.()
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className='space-y-4'
+      >
+        <FormField
+          name='name'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  type='text'
+                  placeholder='e.g. Cash, Bank, Credit Card'
+                  {...field}
+                  disabled={disabled}
+                />
+              </FormControl>
+              <FormMessage>{fieldState.error?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
+        <Button
+          className='w-full'
+          disabled={disabled}
+        >
+          {id ? 'save changes' : 'create transaction'}
+        </Button>
+        {!!id && (
+          <Button
+            type='button'
+            disabled={disabled}
+            onClick={handleDelete}
+            className='w-full'
+            variant='outline'
+          >
+            <Trash className='size-4 mr-2' />
+            Delete transaction
+          </Button>
+        )}
+      </form>
+    </Form>
+  )
 }: Props) => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
