@@ -1,5 +1,5 @@
 {
-  "id": "fdade3e6-7cea-472b-915d-8b174ed94480",
+  "id": "e4536a84-e15d-44fe-a96e-f5ec018ffb2d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -82,15 +82,9 @@
           "primaryKey": true,
           "notNull": true
         },
-        "plaid_id": {
-          "name": "plaid_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "amount": {
           "name": "amount",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -123,18 +117,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},

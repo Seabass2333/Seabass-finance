@@ -4,30 +4,30 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from '@/lib/hono'
 
-type ResponseType = InferResponseType<typeof client.api.accounts[':id']['$delete']>
+type ResponseType = InferResponseType<typeof client.api.transactions[':id']['$delete']>
 
-export const useDeleteAccount = (id: string) => {
+export const useDeleteTransaction = (id: string) => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation<ResponseType, Error>(
     {
       mutationFn: async () => {
-        const response = await client.api.accounts[':id']['$delete']({ param: { id } })
+        const response = await client.api.transactions[':id']['$delete']({ param: { id } })
 
         return await response.json()
       },
       onSuccess: () => {
-        toast.success('Account deleted')
+        toast.success('Transaction deleted')
         queryClient.invalidateQueries({
-          queryKey: ['accounts', { id }]
+          queryKey: ['transactions', { id }]
         })
         queryClient.invalidateQueries({
-          queryKey: ['accounts']
+          queryKey: ['transactions']
         })
-        // TODO: Invalidate account query
+        // TODO: Invalidate summary query
       },
       onError: (error) => {
-        toast.error('Failed to delete account')
+        toast.error('Failed to delete transaction')
       }
     }
   )

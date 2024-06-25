@@ -116,15 +116,33 @@ const Categories = new Hono()
         return c.json({ error: 'Unauthorized' }, 401)
       }
 
-      const { name } = c.body
-      if (!name) {
-        return c.json({ error: 'Name is required' }, 400)
-      }
-
       const [data] = await db.insert(transactions).values({
         id: createId(),
         ...values
       }).returning()
+
+      return c.json({ data })
+    })
+  .post(
+    '/bulk-create',
+    clerkMiddleware(),
+    zValidator('json', z.array(insertTransactionSchema.omit({
+      id: true,
+    }))),
+    async (c) => {
+      const auth = getAuth(c)
+      const values = c.req.valid('json')
+
+      if (!auth?.userId) {
+        return c.json({ error: 'Unauthorized' }, 401)
+      }
+
+      const data = await db.insert(transactions).values(
+        values.map((value) => ({
+          id: createId(),
+          ...value
+        }))
+      ).returning()
 
       return c.json({ data })
     })
@@ -189,11 +207,6 @@ const Categories = new Hono()
 
       if (!auth?.userId) {
         return c.json({ error: 'Unauthorized' }, 401)
-      }
-
-      const { name } = c.body
-      if (!name) {
-        return c.json({ error: 'Name is required' }, 400)
       }
 
       const transactionsToUpdate = db
@@ -273,6 +286,5 @@ const Categories = new Hono()
       return c.json({ data })
     }
   )
-
 
 export default Categories

@@ -14,15 +14,12 @@ CREATE TABLE IF NOT EXISTS "categories" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transactions" (
 	"id" text PRIMARY KEY NOT NULL,
-	"plaid_id" text,
-	"amount" text NOT NULL,
+	"amount" integer NOT NULL,
 	"payee" text NOT NULL,
 	"notes" text,
 	"date" timestamp NOT NULL,
 	"account_id" text NOT NULL,
-	"category_id" text,
-	"name" text NOT NULL,
-	"user_id" text NOT NULL
+	"category_id" text
 );
 --> statement-breakpoint
 DO $$ BEGIN

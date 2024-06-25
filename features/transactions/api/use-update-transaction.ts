@@ -4,31 +4,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { client } from '@/lib/hono'
 
-type ResponseType = InferResponseType<typeof client.api.accounts[':id']['$patch']>
-type RequestType = InferRequestType<typeof client.api.accounts[':id']['$patch']>['json']
+type ResponseType = InferResponseType<typeof client.api.transactions[':id']['$patch']>
+type RequestType = InferRequestType<typeof client.api.transactions[':id']['$patch']>['json']
 
-export const useUpdateAccount = (id: string) => {
+export const useUpdateTransaction = (id: string) => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation<ResponseType, Error, RequestType>(
     {
       mutationFn: async (json) => {
-        const response = await client.api.accounts[':id']['$patch']({ json, param: { id } })
+        const response = await client.api.transactions[':id']['$patch']({ json, param: { id } })
 
         return await response.json()
       },
       onSuccess: () => {
-        toast.success('Account updated')
+        toast.success('Transaction updated')
         queryClient.invalidateQueries({
-          queryKey: ['accounts', { id }]
+          queryKey: ['transactions', { id }]
         })
         queryClient.invalidateQueries({
-          queryKey: ['accounts']
+          queryKey: ['transactions']
         })
-        // TODO: Invalidate account query
+        // TODO: Invalidate summary query
       },
       onError: (error) => {
-        toast.error('Failed to update account')
+        toast.error('Failed to update transaction')
       }
     }
   )
