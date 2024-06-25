@@ -101,8 +101,7 @@ const Categories = new Hono()
       }
 
       return c.json({ data })
-    }
-  )
+    })
   .post(
     '/',
     clerkMiddleware(),
@@ -128,8 +127,8 @@ const Categories = new Hono()
       }).returning()
 
       return c.json({ data })
-    }
-  ).post(
+    })
+  .post(
     '/bulk-delete',
     clerkMiddleware(),
     zValidator('json', z.object({
@@ -143,16 +142,19 @@ const Categories = new Hono()
         return c.json({ error: 'Unauthorized' }, 401)
       }
 
-      const transactionsToDelete = db.$with('transactions_to_delete').as(
-        db.select({ id: transactions.id }).from(transactions)
-          .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-          .where(
-            and(
-              inArray(transactions.id, ids),
-              eq(transactions.userId, auth.userId)
+      const transactionsToDelete = db
+        .$with('transactions_to_delete')
+        .as(
+          db.select({ id: transactions.id })
+            .from(transactions)
+            .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+            .where(
+              and(
+                inArray(transactions.id, ids),
+                eq(transactions.userId, auth.userId)
+              )
             )
-          )
-      )
+        )
 
       const data = await db
         .with(transactionsToDelete)
@@ -166,15 +168,15 @@ const Categories = new Hono()
 
 
       return c.json({ data })
-    }
-  ).patch(
+    })
+  .patch(
     '/:id',
     clerkMiddleware(),
     zValidator('param', z.object({
       id: z.string().optional()
     })),
-    zValidator('json', insertTransactionSchema.pick({
-      name: true,
+    zValidator('json', insertTransactionSchema.omit({
+      id: true,
     })),
     async (c) => {
       const auth = getAuth(c)
@@ -194,18 +196,35 @@ const Categories = new Hono()
         return c.json({ error: 'Name is required' }, 400)
       }
 
-      const [data] = await db.update(transactions).set({
-        ...values
-      }).where(
-        and(
-          eq(transactions.userId, auth.userId),
-          eq(transactions.id, id)
+      const transactionsToUpdate = db
+        .$with('transactions_to_update')
+        .as(
+          db.select({ id: transactions.id })
+            .from(transactions)
+            .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+            .where(
+              and(
+                eq(transactions.id, id),
+                eq(transactions.userId, auth.userId)
+              )
+            )
         )
-      ).returning()
+
+      const [data] = await db
+        .with(transactionsToUpdate)
+        .update(transactions)
+        .set(values)
+        .where(
+          inArray(transactions.id, sql`(select id from ${transactionsToUpdate})`)
+        ).returning()
+
+      if (!data) {
+        return c.json({ error: 'Not Found' }, 404)
+      }
 
       return c.json({ data })
-    }
-  ).delete(
+    })
+  .delete(
     '/:id',
     clerkMiddleware(),
     zValidator('param', z.object({
@@ -223,14 +242,27 @@ const Categories = new Hono()
         return c.json({ error: 'Unauthorized' }, 401)
       }
 
+      const transactionsToDelete = db
+        .$with('transactions_to_delete')
+        .as(
+          db.select({ id: transactions.id })
+            .from(transactions)
+            .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+            .where(
+              and(
+                eq(transactions.id, id),
+                eq(transactions.userId, auth.userId)
+              )
+            )
+        )
+
       const [data] = await db
+        .with(transactionsToDelete)
         .delete(transactions)
         .where(
-          and(
-            eq(transactions.userId, auth.userId),
-            eq(transactions.id, id)
-          )
-        ).returning({
+          inArray(transactions.id, sql`(select id from ${transactionsToDelete})`)
+        )
+        .returning({
           id: transactions.id,
         })
 
