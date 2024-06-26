@@ -7,7 +7,7 @@ import { client } from '@/lib/hono'
 type ResponseType = InferResponseType<typeof client.api.transactions['bulk-delete']['$post']>
 type RequestType = InferRequestType<typeof client.api.transactions['bulk-delete']['$post']>['json']
 
-export const useBulkDeleteTransaction = () => {
+export const useBulkDeleteTransactions = () => {
   const queryClient = useQueryClient()
 
   const mutation = useMutation<ResponseType, Error, RequestType>(

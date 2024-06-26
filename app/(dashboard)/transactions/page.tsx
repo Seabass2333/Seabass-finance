@@ -5,7 +5,7 @@ import { Loader2, Plus } from 'lucide-react'
 import { useNewTransaction } from '@/features/transactions/hooks/use-new-transaction'
 
 import { useGetTransactions } from '@/features/transactions/api/use-get-transactions'
-import { useBulkDeleteTransaction } from '@/features/transactions/api/use-bulk-delete-transactions'
+import { useBulkDeleteTransactions } from '@/features/transactions/api/use-bulk-delete-transactions'
 
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/data-table'
@@ -16,7 +16,7 @@ import { columns } from './columns'
 
 const TransactionsPage = () => {
   const newTransaction = useNewTransaction()
-  const deletedTransaction = useBulkDeleteTransaction()
+  const deletedTransaction = useBulkDeleteTransactions()
   const transactionsQuery = useGetTransactions()
   const transactions = transactionsQuery.data || []
 

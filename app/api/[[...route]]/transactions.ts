@@ -1,24 +1,24 @@
+import { z } from "zod";
 import { Hono } from "hono";
+import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
+import { parse, subDays } from "date-fns";
+
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/drizzle";
-import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
-import { z } from "zod";
-import { parse, subDays } from "date-fns";
-
 import { transactions, insertTransactionSchema, categories, accounts } from "@/db/schema";
 
 const Transaction = new Hono()
   .get(
     '/',
+    clerkMiddleware(),
     zValidator('query', z.object({
       from: z.string().optional(),
       to: z.string().optional(),
       accountId: z.string().optional(),
     })),
-    clerkMiddleware(),
     async (c) => {
       const auth = getAuth(c)
       const { from, to, accountId } = c.req.valid('query')
@@ -37,11 +37,11 @@ const Transaction = new Hono()
         .select({
           id: transactions.id,
           date: transactions.date,
+          // payee: transactions.payee,
+          // notes: transactions.notes,
+          amount: transactions.amount,
           category: categories.name,
           categoryId: transactions.categoryId,
-          payee: transactions.payee,
-          amount: transactions.amount,
-          notes: transactions.notes,
           account: accounts.name,
           accountId: transactions.accountId,
         })
@@ -112,7 +112,6 @@ const Transaction = new Hono()
     async (c) => {
       const auth = getAuth(c)
       const values = c.req.valid('json')
-
       if (!auth?.userId) {
         return c.json({ error: 'Unauthorized' }, 401)
       }
@@ -121,7 +120,6 @@ const Transaction = new Hono()
         id: createId(),
         ...values
       }).returning()
-
       return c.json({ data })
     })
   .post(

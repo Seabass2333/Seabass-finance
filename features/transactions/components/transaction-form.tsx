@@ -18,6 +18,7 @@ import Select from '@/components/select'
 import { DatePicker } from '@/components/date-picker'
 import { Textarea } from '@/components/ui/textarea'
 import { AmountInput } from '@/components/amount-input'
+import { convertAmountToMilicent } from '@/lib/utils'
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -64,8 +65,9 @@ export const TransactionForm = ({
   })
 
   const handleSubmit = (data: FormValues) => {
-    // onSubmit(data)
-    console.log(data)
+    const amount = parseFloat(data.amount)
+    const amountInMilicent = convertAmountToMilicent(amount)
+    onSubmit({ ...data, amount: amountInMilicent })
   }
 
   const handleDelete = () => {
