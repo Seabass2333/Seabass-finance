@@ -14,6 +14,10 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
+import Select from '@/components/select'
+import { DatePicker } from '@/components/date-picker'
+import { Textarea } from '@/components/ui/textarea'
+import { AmountInput } from '@/components/amount-input'
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -60,7 +64,8 @@ export const TransactionForm = ({
   })
 
   const handleSubmit = (data: FormValues) => {
-    onSubmit(data)
+    // onSubmit(data)
+    console.log(data)
   }
 
   const handleDelete = () => {
@@ -74,79 +79,102 @@ export const TransactionForm = ({
         className='space-y-4'
       >
         <FormField
-          name='name'
+          name='date'
           control={form.control}
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input
-                  type='text'
-                  placeholder='e.g. Cash, Bank, Credit Card'
-                  {...field}
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
                   disabled={disabled}
                 />
               </FormControl>
-              <FormMessage>{fieldState.error?.message}</FormMessage>
             </FormItem>
           )}
         />
-        <Button
-          className='w-full'
-          disabled={disabled}
-        >
-          {id ? 'save changes' : 'create transaction'}
-        </Button>
-        {!!id && (
-          <Button
-            type='button'
-            disabled={disabled}
-            onClick={handleDelete}
-            className='w-full'
-            variant='outline'
-          >
-            <Trash className='size-4 mr-2' />
-            Delete transaction
-          </Button>
-        )}
-      </form>
-    </Form>
-  )
-}: Props) => {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues
-  })
-
-  const handleSubmit = (data: FormValues) => {
-    onSubmit(data)
-  }
-
-  const handleDelete = () => {
-    onDelete?.()
-  }
-
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className='space-y-4'
-      >
         <FormField
-          name='name'
+          name='accountId'
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account</FormLabel>
+              <FormControl>
+                <Select
+                  placeholder='Select an account'
+                  options={accountOptions}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                  onCreate={onCreateAccount}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='categoryId'
           control={form.control}
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input
-                  type='text'
-                  placeholder='e.g. Cash, Bank, Credit Card'
-                  {...field}
-                  disabled={disabled}
+                <Select
+                  placeholder='Select an category'
+                  options={categoryOptions}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onCreate={onCreateCategory}
                 />
               </FormControl>
-              <FormMessage>{fieldState.error?.message}</FormMessage>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='payee'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Payee</FormLabel>
+              <FormControl>
+                <Input
+                  disabled={disabled}
+                  placeholder='Enter a payee'
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='amount'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <AmountInput
+                  disabled={disabled}
+                  placeholder='0.00'
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='notes'
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>Notes</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  disabled={disabled}
+                  value={field.value ?? ''}
+                  placeholder='Optional Notes'
+                />
+              </FormControl>
             </FormItem>
           )}
         />
