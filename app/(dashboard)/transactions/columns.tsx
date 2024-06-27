@@ -3,15 +3,18 @@
 import { InferResponseType } from 'hono'
 import { ArrowUpDown } from 'lucide-react'
 import { ColumnDef } from '@tanstack/react-table'
+import { format } from 'date-fns'
 
 import { client } from '@/lib/hono'
+import { formatCurrency } from '@/lib/utils'
+
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Badge } from '@/components/ui/badge'
 
 import Actions from './actions'
-import { format } from 'date-fns'
-import { formatCurrency } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import AccountColumn from './account-column'
+import CategoryColumn from './category-column'
 
 export type ResponseType = InferResponseType<
   typeof client.api.transactions.$get,
@@ -55,7 +58,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       )
     },
     cell: ({ row }) => {
-      const date = row.getValue('date') as Date
+      const date = (row.getValue('date') as Date) || '2024-06-25T16:00:00.000Z'
       return <span>{format(date, 'dd MMMM, yyyy')}</span>
     }
   },
@@ -73,7 +76,13 @@ export const columns: ColumnDef<ResponseType>[] = [
       )
     },
     cell: ({ row }) => {
-      return <span>{row.original.category}</span>
+      return (
+        <CategoryColumn
+          id={row.original.id}
+          category={row.original.category}
+          categoryId={row.original.categoryId}
+        />
+      )
     }
   },
   {
@@ -129,7 +138,12 @@ export const columns: ColumnDef<ResponseType>[] = [
       )
     },
     cell: ({ row }) => {
-      return <Badge>{row.original.account}</Badge>
+      return (
+        <AccountColumn
+          account={row.original.account}
+          accountId={row.original.accountId}
+        />
+      )
     }
   },
   {

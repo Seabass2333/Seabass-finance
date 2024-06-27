@@ -107,7 +107,11 @@ export const TransactionForm = ({
                   options={accountOptions}
                   value={field.value}
                   onChange={(value) => field.onChange(value)}
-                  onCreate={onCreateAccount}
+                  onCreate={(value) => {
+                    console.log({ value })
+
+                    onCreateAccount(value)
+                  }}
                 />
               </FormControl>
             </FormItem>
@@ -118,7 +122,7 @@ export const TransactionForm = ({
           control={form.control}
           render={({ field, fieldState }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Category</FormLabel>
               <FormControl>
                 <Select
                   placeholder='Select an category'
@@ -134,18 +138,22 @@ export const TransactionForm = ({
         <FormField
           name='payee'
           control={form.control}
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Payee</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={disabled}
-                  placeholder='Enter a payee'
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field, fieldState }) => {
+            console.log({ field, fieldState })
+
+            return (
+              <FormItem>
+                <FormLabel>Payee</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={disabled}
+                    placeholder='Enter a payee'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )
+          }}
         />
         <FormField
           name='amount'

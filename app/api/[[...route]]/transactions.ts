@@ -37,8 +37,8 @@ const Transaction = new Hono()
         .select({
           id: transactions.id,
           date: transactions.date,
-          // payee: transactions.payee,
-          // notes: transactions.notes,
+          payee: transactions.payee,
+          notes: transactions.notes,
           amount: transactions.amount,
           category: categories.name,
           categoryId: transactions.categoryId,
@@ -110,17 +110,20 @@ const Transaction = new Hono()
       id: true,
     })),
     async (c) => {
-      const auth = getAuth(c)
-      const values = c.req.valid('json')
+      const auth = getAuth(c);
+      const values = c.req.valid('json');
+
       if (!auth?.userId) {
-        return c.json({ error: 'Unauthorized' }, 401)
+        return c.json({ error: 'Unauthorized' }, 401);
       }
 
       const [data] = await db.insert(transactions).values({
         id: createId(),
-        ...values
-      }).returning()
-      return c.json({ data })
+        ...values,
+      }).returning();
+
+      return c.json({ data });
+
     })
   .post(
     '/bulk-create',

@@ -20,7 +20,7 @@ const Select = ({
   disabled,
   placeholder
 }: Props) => {
-  const handleChange = (
+  const onSelect = (
     option: SingleValue<{
       label: string
       value: string
@@ -29,22 +29,22 @@ const Select = ({
     onChange(option?.value)
   }
 
-  const handleCreate = (name: string) => {
-    onCreate?.(name)
-  }
+  // const handleCreate = (name: string) => {
+  //   onCreate?.(name)
+  // }
 
-  const selectedOption = useMemo(() => {
+  const formattedValues = useMemo(() => {
     return options.find((option) => option.value === value)
   }, [options, value])
 
   return (
     <CreateableSelect
-      options={options}
-      value={selectedOption}
-      onChange={handleChange}
-      onCreateOption={handleCreate}
-      isDisabled={disabled}
       placeholder={placeholder}
+      options={options}
+      value={formattedValues}
+      onChange={onSelect}
+      onCreateOption={onCreate}
+      isDisabled={disabled}
       className='text-sm h-10'
       styles={{
         control: (base) => ({

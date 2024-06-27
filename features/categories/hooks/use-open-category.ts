@@ -8,8 +8,8 @@ type OpenCategoryState = {
 }
 
 export const useOpenCategory = create<OpenCategoryState>((set) => ({
-  id: '',
+  id: undefined,
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false, id: '' })
+  onClose: () => set({ isOpen: false, id: undefined })
 }))

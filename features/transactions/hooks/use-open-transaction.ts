@@ -8,8 +8,8 @@ type OpenTransactionState = {
 }
 
 export const useOpenTransaction = create<OpenTransactionState>((set) => ({
-  id: '',
+  id: undefined,
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false, id: '' })
+  onClose: () => set({ isOpen: false, id: undefined })
 }))

@@ -25,6 +25,9 @@ export const useUpdateCategory = (id: string) => {
         queryClient.invalidateQueries({
           queryKey: ['categories']
         })
+        queryClient.invalidateQueries({
+          queryKey: ['transactions']
+        })
         // TODO: Invalidate category-query
       },
       onError: (error) => {

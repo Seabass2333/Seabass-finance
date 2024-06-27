@@ -25,6 +25,9 @@ export const useUpdateAccount = (id: string) => {
         queryClient.invalidateQueries({
           queryKey: ['accounts']
         })
+        queryClient.invalidateQueries({
+          queryKey: ['transactions']
+        })
         // TODO: Invalidate account query
       },
       onError: (error) => {

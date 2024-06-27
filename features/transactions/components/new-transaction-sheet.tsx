@@ -33,23 +33,21 @@ export const NewTransactionSheet = () => {
   // category
   const categoryQuery = useGetCategories()
   const categoryMutation = useCreateCategory()
-  const onCreateCategory = async (name: string) =>
-    categoryMutation.mutate({ name })
+  const onCreateCategory = (name: string) => categoryMutation.mutate({ name })
   const categoryOptions =
-    categoryQuery.data?.map((category) => ({
-      value: category.id,
-      label: category.name
+    (categoryQuery.data ?? []).map((category) => ({
+      label: category.name,
+      value: category.id
     })) || []
 
   //account
   const accountQuery = useGetAccounts()
   const accountMutation = useCreateAccount()
-  const onCreateAccount = async (name: string) =>
-    accountMutation.mutate({ name })
+  const onCreateAccount = (name: string) => accountMutation.mutate({ name })
   const accountOptions =
-    accountQuery.data?.map((account) => ({
-      value: account.id,
-      label: account.name
+    (accountQuery.data ?? []).map((account) => ({
+      label: account.name,
+      value: account.id
     })) || []
 
   const isPending =
