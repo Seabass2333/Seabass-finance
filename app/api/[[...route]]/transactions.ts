@@ -123,7 +123,6 @@ const Transaction = new Hono()
       }).returning();
 
       return c.json({ data });
-
     })
   .post(
     '/bulk-create',

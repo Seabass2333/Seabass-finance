@@ -139,8 +139,6 @@ export const TransactionForm = ({
           name='payee'
           control={form.control}
           render={({ field, fieldState }) => {
-            console.log({ field, fieldState })
-
             return (
               <FormItem>
                 <FormLabel>Payee</FormLabel>
