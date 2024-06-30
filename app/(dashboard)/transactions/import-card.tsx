@@ -23,27 +23,34 @@ export const ImportCard: React.FC<Props> = ({ data, onCancel, onSubmit }) => {
     {}
   )
 
-  const headers: string[] = data[0]
-  const body: string[][] = data.slice(1)
+  const headers: any = data[0]
+  const body: any = data.slice(1)
 
   const [selected, setSelected] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
 
-  const handleSelect = (value: string) => {
-    if (selected.includes(value)) {
-      setSelected(selected.filter((v) => v !== value))
-    } else {
-      setSelected([...selected, value])
-    }
+  const onTableHeaderSelectChange = (
+    columnIndex: number,
+    value: string | null
+  ) => {
+    setSelectedColumns((prev) => {
+      const newSelectedColumns = { ...prev }
+
+      for (const key in newSelectedColumns) {
+        if (newSelectedColumns[key] === value) {
+          newSelectedColumns[key] = null
+        }
+      }
+      if (value === 'skip') {
+        value = null
+      }
+
+      newSelectedColumns[`column_${columnIndex}`] = value
+      return newSelectedColumns
+    })
   }
 
-  const handleSubmit = () => {
-    if (selected.length === 0) {
-      setError('Please select at least one card to import')
-    } else {
-      onSubmit(selected)
-    }
-  }
+  const progress = () => Object.values(selectedColumns).filter(Boolean).length
 
   return (
     <div className='max-w-screen-2xl mx-auto w-full pb-10 -mt-24'>
@@ -59,6 +66,12 @@ export const ImportCard: React.FC<Props> = ({ data, onCancel, onSubmit }) => {
             >
               Cancel
             </Button>
+            <Button
+              disabled={progress < requiredOptions.length}
+              onClick={() => {}}
+            >
+              Continue ({progress} / {requiredOptions.length})
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -66,7 +79,7 @@ export const ImportCard: React.FC<Props> = ({ data, onCancel, onSubmit }) => {
             headers={headers}
             body={body}
             selectedColumns={selectedColumns}
-            onTableHeaderSelectChange={() => {}}
+            onTableHeaderSelectChange={onTableHeaderSelectChange}
           />
         </CardContent>
       </Card>
