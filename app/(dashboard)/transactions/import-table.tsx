@@ -20,8 +20,6 @@ const ImportTable = ({
   selectedColumns,
   onTableHeaderSelectChange
 }: Props) => {
-  console.log(body)
-
   return (
     <div className='rounded-md border overflow-hidden'>
       <Table>

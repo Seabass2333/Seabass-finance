@@ -84,12 +84,13 @@ const TransactionsPage = () => {
           <CardTitle className='text-xl line-clamp-1'>
             Transactions Page
           </CardTitle>
-          <div className='flex items-center gap-x-2'>
+          <div className='flex items-center gap-x-2 flex-col lg:flex-row gap-y-2'>
             <Button
               onClick={newTransaction.onOpen}
               size='sm'
+              className='w-full lg:w-auto'
             >
-              <Plus />
+              <Plus className='size-4 mr-2' />
               Add New
             </Button>
             <UploadButton onUpload={onUpload} />
