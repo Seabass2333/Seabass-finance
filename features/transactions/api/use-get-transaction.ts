@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { client } from '@/lib/hono'
+import { convertAmountFromMilicent } from '@/lib/utils'
 
 export const useGetTransaction = (id?: string) => {
   const query = useQuery({
@@ -16,7 +17,10 @@ export const useGetTransaction = (id?: string) => {
       }
 
       const { data } = await response.json()
-      return data
+      return {
+        ...data,
+        amount: convertAmountFromMilicent(data.amount)
+      }
     }
   })
   return query

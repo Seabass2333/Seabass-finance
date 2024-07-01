@@ -10,12 +10,12 @@ type Props = {
   categoryId: string | null
 }
 
-const CategoryColumn = ({ category, categoryId }: Props) => {
+const CategoryColumn = ({ id, category, categoryId }: Props) => {
   const { onOpen: onOpenCategory } = useOpenCategory()
   const { onOpen: onOpenTransaction } = useOpenTransaction()
 
   const onClick = () => {
-    if (!categoryId) onOpenCategory(categoryId)
+    if (categoryId) onOpenCategory(categoryId)
     else onOpenTransaction(id)
   }
 

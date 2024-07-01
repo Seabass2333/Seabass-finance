@@ -21,7 +21,7 @@ interface SelectedColumnsState {
 type Props = {
   data: string[]
   onCancel: () => void
-  onSubmit: (data: string[]) => void
+  onSubmit: (data: any) => void
 }
 export const ImportCard: React.FC<Props> = ({ data, onCancel, onSubmit }) => {
   const [selectedColumns, setSelectedColumns] = useState<SelectedColumnsState>(

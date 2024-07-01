@@ -156,18 +156,20 @@ export const TransactionForm = ({
         <FormField
           name='amount'
           control={form.control}
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Amount</FormLabel>
-              <FormControl>
-                <AmountInput
-                  disabled={disabled}
-                  placeholder='0.00'
-                  {...field}
-                />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({ field, fieldState }) => {
+            return (
+              <FormItem>
+                <FormLabel>Amount</FormLabel>
+                <FormControl>
+                  <AmountInput
+                    disabled={disabled}
+                    placeholder='0.00'
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )
+          }}
         />
         <FormField
           name='notes'
