@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis
 } from 'recharts'
+import { CustomTooltip } from '@/components/custom-tooltip'
 
 type Data = {
   data: {
@@ -72,6 +73,7 @@ export const AreaVariant = ({ data }: Data) => {
           style={{ fontSize: '12px' }}
           tickMargin={16}
         />
+        <CustomTooltip />
         <Area
           type='monotone'
           dataKey='income'
