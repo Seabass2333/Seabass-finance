@@ -81,24 +81,6 @@ export const PieVariant = ({ data }: Props) => {
             />
           ))}
         </Pie>
-        <Tooltip
-          contentStyle={{
-            background: '#fff',
-            border: '1px solid #ccc',
-            borderRadius: 4,
-            padding: 8
-          }}
-          formatter={(value) => formatPercentage(value)}
-        />
-        <Legend
-          verticalAlign='middle'
-          align='center'
-          iconType='circle'
-          layout='vertical'
-          wrapperStyle={{
-            padding: 8
-          }}
-        />
       </PieChart>
     </ResponsiveContainer>
   )
