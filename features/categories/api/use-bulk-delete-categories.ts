@@ -22,7 +22,9 @@ export const useBulkDeleteCategory = () => {
         queryClient.invalidateQueries({
           queryKey: ['categories']
         })
-        // TODO: Add invalidation for categorie
+        queryClient.invalidateQueries({
+          queryKey: ['summary']
+        })
       },
       onError: (error) => {
         toast.error('Failed to delete category')
