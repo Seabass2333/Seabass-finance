@@ -39,8 +39,6 @@ const TransactionsPage = () => {
   const [importResults, setImportResults] = useState(INITIAL_IMPORT_RESULTS)
 
   const onUpload = (result: typeof INITIAL_IMPORT_RESULTS) => {
-    console.log(result)
-
     setImportResults(result)
     setVariant(VARIANTS.IMPORT)
   }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FileSearch, PieChart, Radar, Target } from 'lucide-react'
+import { FileSearch, PieChart, Radar, Target, Loader2 } from 'lucide-react'
 
 import {
   Card,
@@ -15,18 +15,19 @@ import {
   SelectValue,
   SelectItem
 } from '@/components/ui/select'
-import { AreaVariant } from '@/components/area-variant'
-import { BarVariant } from '@/components/bar-variant'
-import { LineVariant } from '@/components/line-variant'
+import { Skeleton } from './ui/skeleton'
+
+import { PieVariant } from '@/components/pie-variant'
+import { RadarVariant } from '@/components/radar-variant'
+import { RadialVariant } from '@/components/radial-variant'
 
 type Props = {
   data: {
     date: string
-    income: number
-    expenses: number
+    value: number
   }[]
 }
-export const SpendingPie = ({ data }: Props) => {
+export const SpendingPie = ({ data = [] }: Props) => {
   const [chartType, setChartType] = useState('pie')
 
   const handleChartTypeChange = (type: string) => {
@@ -78,16 +79,26 @@ export const SpendingPie = ({ data }: Props) => {
           </div>
         ) : (
           <>
-            {chartType === 'pie' && <PieChart data={data} />}
-            {chartType === 'radar' && <Radar data={data} />}
-            {chartType === 'target' && <Target data={data} />}
+            {chartType === 'pie' && <PieVariant data={data} />}
+            {chartType === 'radar' && <RadarVariant data={data} />}
+            {chartType === 'target' && <RadialVariant data={data} />}
           </>
         )}
-        <div className='h-96'>
-          <div
-            className='h-full w-full'
-            id='chart'
-          ></div>
+      </CardContent>
+    </Card>
+  )
+}
+
+export const SpendingPieLoading = () => {
+  return (
+    <Card className='border-none drop-shadow-sm'>
+      <CardHeader className='flex space-y-2 lg:space-y-0 lg:flex-row lg:items-center justify-between'>
+        <Skeleton className='w-48 h-8' />
+        <Skeleton className='h-8 lg:w-[120px] w-full' />
+      </CardHeader>
+      <CardContent>
+        <div className='flex flex-col items-center justify-center h-[350px] w-full'>
+          <Loader2 className='h-6 w-6 text-slate-300 animate-spin' />
         </div>
       </CardContent>
     </Card>

@@ -1,6 +1,12 @@
 import { useState } from 'react'
 
-import { FileSearch, AreaChart, BarChart3, LineChart } from 'lucide-react'
+import {
+  FileSearch,
+  AreaChart,
+  BarChart3,
+  LineChart,
+  Loader2
+} from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -10,6 +16,8 @@ import {
   SelectValue,
   SelectItem
 } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
+
 import { AreaVariant } from '@/components/area-variant'
 import { BarVariant } from '@/components/bar-variant'
 import { LineVariant } from '@/components/line-variant'
@@ -78,11 +86,27 @@ export const Chart = ({ data }: Props) => {
             {chartType === 'line' && <LineVariant data={data} />}
           </>
         )}
-        <div className='h-96'>
+        {/* <div className='h-96'>
           <div
             className='h-full w-full'
             id='chart'
           ></div>
+        </div> */}
+      </CardContent>
+    </Card>
+  )
+}
+
+export const ChartLoading = () => {
+  return (
+    <Card className='border-none drop-shadow-sm'>
+      <CardHeader className='flex space-y-2 lg:space-y-0 lg:flex-row lg:items-center justify-between'>
+        <Skeleton className='w-48 h-8' />
+        <Skeleton className='h-8 lg:w-[120px] w-full' />
+      </CardHeader>
+      <CardContent>
+        <div className='flex flex-col items-center justify-center h-[350px] w-full'>
+          <Loader2 className='h-6 w-6 text-slate-300 animate-spin' />
         </div>
       </CardContent>
     </Card>

@@ -108,8 +108,6 @@ export const TransactionForm = ({
                   value={field.value}
                   onChange={(value) => field.onChange(value)}
                   onCreate={(value) => {
-                    console.log({ value })
-
                     onCreateAccount(value)
                   }}
                 />

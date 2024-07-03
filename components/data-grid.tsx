@@ -10,7 +10,6 @@ import { DataCard, DataCardLoading } from './data-card'
 
 const DataGrid = () => {
   const { data, isLoading } = useGetSummary()
-  console.log(data)
 
   const params = useSearchParams()
   const from = params.get('from') || ''
