@@ -23,13 +23,13 @@ import { BarVariant } from '@/components/bar-variant'
 import { LineVariant } from '@/components/line-variant'
 
 type Props = {
-  data: {
+  data?: {
     date: string
     income: number
     expenses: number
   }[]
 }
-export const Chart = ({ data }: Props) => {
+export const Chart = ({ data = [] }: Props) => {
   const [chartType, setChartType] = useState('area')
 
   const handleChartTypeChange = (type: string) => {
@@ -86,12 +86,6 @@ export const Chart = ({ data }: Props) => {
             {chartType === 'line' && <LineVariant data={data} />}
           </>
         )}
-        {/* <div className='h-96'>
-          <div
-            className='h-full w-full'
-            id='chart'
-          ></div>
-        </div> */}
       </CardContent>
     </Card>
   )

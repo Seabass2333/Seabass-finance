@@ -95,7 +95,7 @@ export const EditTransactionSheet = () => {
     ? {
         accountId: transactionQuery.data.accountId,
         categoryId: transactionQuery.data.categoryId,
-        amount: transactionQuery.data.amount,
+        amount: transactionQuery.data.amount.toString(),
         date: transactionQuery.data.date
           ? new Date(transactionQuery.data.date)
           : new Date(),
@@ -105,7 +105,7 @@ export const EditTransactionSheet = () => {
     : {
         accountId: '',
         categoryId: '',
-        amount: 0,
+        amount: '',
         date: new Date(),
         payee: '',
         notes: ''
@@ -129,10 +129,10 @@ export const EditTransactionSheet = () => {
             </div>
           ) : (
             <TransactionForm
-              key={id}
               id={id}
               defaultValues={defaultValues}
               onSubmit={handleSubmit}
+              onDelete={onDelete}
               disabled={isPending}
               categoryOptions={categoryOptions}
               onCreateCategory={onCreateCategory}

@@ -46,7 +46,7 @@ interface DataCardProps extends BoxVariant, IconVariant {
   icon: IconType
   title: string
   value?: number
-  percentageChange: number
+  percentageChange?: number
   dataRange: string
 }
 
@@ -55,7 +55,7 @@ export const DataCard = ({
   title,
   value = 0,
   dataRange,
-  percentageChange,
+  percentageChange = 0,
   variant = 'default'
 }: DataCardProps) => {
   return (

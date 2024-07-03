@@ -9,7 +9,7 @@ import {
 
 type Props = {
   data?: {
-    date: string
+    name: string
     value: number
   }[]
 }

@@ -22,8 +22,8 @@ import { RadarVariant } from '@/components/radar-variant'
 import { RadialVariant } from '@/components/radial-variant'
 
 type Props = {
-  data: {
-    date: string
+  data?: {
+    name: string
     value: number
   }[]
 }

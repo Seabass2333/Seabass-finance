@@ -11,7 +11,7 @@ const COLORS = ['#0062ff', '#12c6ff', '#ff647f', '#ff9354']
 
 type Props = {
   data: {
-    date: string
+    name: string
     value: number
   }[]
 }

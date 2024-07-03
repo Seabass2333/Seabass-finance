@@ -25,7 +25,12 @@ export const useGetSummary = () => {
         throw new Error('Failed to fetch summary')
       }
 
-      const { data } = await response.json()
+      const responseData = await response.json()
+      if ('error' in responseData) {
+        throw new Error(responseData.error)
+      }
+
+      const { data } = responseData
 
       return {
         ...data,
