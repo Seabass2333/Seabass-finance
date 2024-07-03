@@ -73,7 +73,7 @@ export const AreaVariant = ({ data }: Data) => {
           style={{ fontSize: '12px' }}
           tickMargin={16}
         />
-        <CustomTooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Area
           type='monotone'
           dataKey='income'
