@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, FunctionComponent } from 'react'
 import { useGetAccounts } from '../api/use-get-accounts'
 import { useCreateAccount } from '../api/use-create-account'
 
@@ -21,7 +21,7 @@ interface ConfirmDialogProps {
 }
 
 export const useSelectAccount = (): [
-  React.FC<ConfirmDialogProps>,
+  FunctionComponent<ConfirmDialogProps>,
   () => Promise<unknown>
 ] => {
   const accountQuery = useGetAccounts()

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Lusitana } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import { QueryProvider } from '@/provider/query-provider'
@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/sonner'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
+const lusitana = Lusitana({ subsets: ['latin'], weight: ['400', '700'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
