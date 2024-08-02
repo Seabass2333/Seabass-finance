@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children
 }: Readonly<{
-  children: React.ReactNode
+  children?: React.ReactNode
 }>) {
   return (
     <ClerkProvider>
@@ -28,7 +28,8 @@ export default function RootLayout({
           <QueryProvider>
             <SheetProvider />
             <Toaster />
-            {children}
+            {/* {children} */}
+            <h1>Home</h1>
           </QueryProvider>
         </body>
       </html>
