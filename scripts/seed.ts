@@ -23,8 +23,6 @@ const SEED_ACCOUNTS = [
 ];
 
 
-
-
 const defaultTo = new Date();
 const defaultFrom = subDays(defaultTo, 90);
 

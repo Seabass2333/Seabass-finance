@@ -27,8 +27,8 @@ const Accounts = new Hono()
         .where(eq(accounts.userId, auth.userId))
 
       return c.json({ data })
-    })
-  .get(
+    }
+  ).get(
     '/:id',
     clerkMiddleware(),
     zValidator('param', z.object({
@@ -65,8 +65,7 @@ const Accounts = new Hono()
 
       return c.json({ data })
     }
-  )
-  .post(
+  ).post(
     '/',
     clerkMiddleware(),
     zValidator('json', insertAccountSchema.pick({
@@ -190,6 +189,5 @@ const Accounts = new Hono()
       return c.json({ data })
     }
   )
-
 
 export default Accounts

@@ -1,4 +1,4 @@
-// https://hono.dev/guides/rpc  
+// https://hono.dev/guides/rpc
 // bottom of the page
 
 import { Hono } from 'hono'
@@ -9,7 +9,6 @@ import categories from './categories';
 import transactions from './transactions';
 import summary from './summary';
 import Setting from './setting';
-
 
 export const runtime = 'edge';
 
