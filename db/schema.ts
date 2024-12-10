@@ -14,8 +14,10 @@ export const accountsRelations = relations(accounts, ({ many }) => ({
   transactions: many(transactions)
 }));
 
+// createInsertSchema: create a schema for insert data
 export const insertAccountSchema = createInsertSchema(accounts);
 
+// create a table for categories
 export const categories = pgTable('categories', {
   id: text('id').primaryKey(),
   plaidId: text('plaid_id'),
@@ -23,12 +25,15 @@ export const categories = pgTable('categories', {
   userId: text('user_id').notNull(),
 });
 
+// create a relation for categories
 export const categoriesRelations = relations(categories, ({ many }) => ({
   transactions: many(transactions)
 }));
 
+// create a schema for insert data
 export const insertCategorySchema = createInsertSchema(categories);
 
+// create a table for transactions
 export const transactions = pgTable('transactions', {
   id: text('id').primaryKey(),
   amount: integer('amount').notNull(),
@@ -43,6 +48,7 @@ export const transactions = pgTable('transactions', {
   }),
 });
 
+// create a relation for transactions
 export const transactionsRelations = relations(transactions, ({ one }) => ({
   account: one(accounts, {
     fields: [transactions.accountId],
@@ -54,6 +60,7 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   })
 }));
 
+// create a schema for insert data
 export const insertTransactionSchema = createInsertSchema(transactions, {
   date: z.coerce.date()
 })

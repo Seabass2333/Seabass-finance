@@ -28,23 +28,12 @@ bun dev
 - **Budgeting Tools**: Set budgets and track your spending against them to maintain financial discipline.
 - **Data Visualization**: Interactive charts and tables to visualize your financial data, making it easier to understand your financial health at a glance.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Guide
-
-For detailed instructions on how to use this application, please refer to the [User Guide](link-to-user-guide).
-
-## Contributing
-
-We welcome contributions! Please read our [Contributing Guidelines](link-to-contributing-guidelines) for more information on how to get involved.
-
 ## License
 
 This project is licensed under the [MIT License](link-to-license).
+
+## Structure
+
+- **Hono**: api tool, using to fetch api (app/api/[[...route]]/\*)
+- **drizzle**: db tool, using to operate database (drizzle)
+- **Neon**: database, using to store data (db)
