@@ -20,6 +20,10 @@ pnpm dev
 bun dev
 ```
 
+## mock data
+
+2024/04/01 - 2024/06/26
+
 ## Features
 
 - **User Authentication**: Secure login and registration to protect user data.
